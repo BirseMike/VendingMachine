@@ -12,7 +12,8 @@
             var container = new UnityContainer();
             container.RegisterType<IProductRepository, ProductRepository>(new ContainerControlledLifetimeManager());
             //container.RegisterType<ICreditCard, ProductRepository>(new PerResolveLifetimeManager());
-            container.RegisterType<ICashRepository, CashRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMachineCashRepository, MachineCashRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ICustomerCashRepository, CustomerCashRepository>(new ContainerControlledLifetimeManager());
             config.DependencyResolver = new UnitResolver(container);
 
             // Web API configuration and services

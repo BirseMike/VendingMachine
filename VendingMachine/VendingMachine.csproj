@@ -236,6 +236,10 @@
       <Project>{05889679-e8d0-4341-9e62-41c80192d753}</Project>
       <Name>VendingMachine.DataServices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VendingMachine.ExternalServices\VendingMachine.ExternalServices.csproj">
+      <Project>{015b1062-4fe7-4d4e-97ef-19986429598b}</Project>
+      <Name>VendingMachine.ExternalServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

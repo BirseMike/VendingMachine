@@ -9,9 +9,4 @@
         Fiver
     }
 
-    class DenominationalBalance
-    {
-        public Demonination Denomination { get; set; }
-        public int Count { get; set; }
-    }
 }

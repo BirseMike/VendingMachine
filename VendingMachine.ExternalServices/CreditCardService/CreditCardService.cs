@@ -1,5 +1,4 @@
-﻿
-namespace VendingMachine.DataServices.CreditCardService
+﻿namespace VendingMachine.ExternalServices
 {
     class CreditCardService : ICreditCardService
     {

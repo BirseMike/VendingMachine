@@ -1,4 +1,4 @@
-﻿namespace VendingMachine.DataServices.CreditCardService
+﻿namespace VendingMachine.ExternalServices
 {
     interface ICreditCardService
     {

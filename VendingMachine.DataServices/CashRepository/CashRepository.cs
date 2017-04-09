@@ -1,22 +1,44 @@
 ﻿namespace VendingMachine.DataServices
 {
     using System;
+    using System.Collections.Generic;
 
-    public class CashRepository : ICashRepository
+     class CashRepository : ICashRepository
     {
-        public bool Add(Demonination denomination)
+        protected Dictionary<Demonination,int> DenominationBalances;
+
+        public CashRepository()
+        {
+            DenominationBalances = new Dictionary<Demonination, int>();
+        }
+
+        public void Add(Demonination denomination)
+        {
+            DenominationBalances[denomination] = DenominationBalances[denomination] + 1;
+        }
+
+        public void Initialise(int Count)
         {
             throw new NotImplementedException();
         }
 
-        public bool GiveChange(double value)
+        public bool Remove(Demonination denomination)
         {
-            throw new NotImplementedException();
+            bool canRemove = DenominationBalances[denomination] > 0;
+            if (canRemove)
+            {
+                DenominationBalances[denomination] = DenominationBalances[denomination] - 1;
+            }
+            return canRemove;
         }
 
-        public bool HasChange(double value)
-        {
-            throw new NotImplementedException();
-        }
+        /*
+
+                  //initialise the cash in the machine
+                   foreach (var denom in Enum.GetValues(typeof(Demonination)))
+                   {
+                       DenominationBalances.Add((Demonination)denom, 5);
+                   }
+                */
     }
 }

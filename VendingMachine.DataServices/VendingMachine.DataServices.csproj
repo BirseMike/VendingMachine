@@ -41,10 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CashRepository\CashRepository.cs" />
-    <Compile Include="CashRepository\DenominationalBalance.cs" />
+    <Compile Include="CashRepository\CustomerCashRepository\CustomerCashRepository.cs" />
+    <Compile Include="CashRepository\CustomerCashRepository\ICustomerCashRepository.cs" />
+    <Compile Include="CashRepository\DenominationBalance.cs" />
     <Compile Include="CashRepository\ICashRepository.cs" />
-    <Compile Include="CreditCardService\CreditCardService.cs" />
-    <Compile Include="CreditCardService\ICreditCardService.cs" />
+    <Compile Include="CashRepository\MachineCashRepository\IMachineCashRepository.cs" />
+    <Compile Include="CashRepository\MachineCashRepository\MachineCashRepository.cs" />
     <Compile Include="ProductRepository\IProductRepository.cs" />
     <Compile Include="ProductRepository\Product.cs" />
     <Compile Include="ProductRepository\ProductRepository.cs" />
