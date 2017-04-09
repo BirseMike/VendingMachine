@@ -7,6 +7,6 @@ namespace VendingMachine.DataServices.CashRepositories
     {
         Task<double> GetCurrentBalance();
         Dictionary<Demonination, int> GetCash();
-        Dictionary<Demonination, int> RefundAll();
+        Task<Dictionary<Demonination, int>> RefundAll();
     }
 }

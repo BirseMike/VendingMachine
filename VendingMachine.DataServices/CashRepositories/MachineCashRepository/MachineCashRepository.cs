@@ -27,9 +27,12 @@
             });
         }
 
-        public bool HasChange(double value)
+        public async Task<bool> HasChange(double value)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() =>
+            {
+                return machineBalances.IsSufficient(value);
+            });
         }
 
         public IEnumerable<KeyValuePair<Demonination, int>> giveChange(double value)

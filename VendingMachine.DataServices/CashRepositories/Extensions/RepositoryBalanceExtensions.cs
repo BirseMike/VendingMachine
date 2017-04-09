@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace VendingMachine.DataServices.CashRepositories
 {
@@ -41,24 +42,35 @@ namespace VendingMachine.DataServices.CashRepositories
                 return false;
             }
 
+            //TODO: Make this more elegant
+            var sum = Convert.ToInt32(valueToCheck * 100);
 
-            //TODO - convert value into balances..
+            var NoOfFivers = sum / 500;
+            if (NoOfFivers > cashBalances[Demonination.Fiver])
+                NoOfFivers = cashBalances[Demonination.Fiver];
+            var FiversRequired = (NoOfFivers * 500);
 
+            var NoOfSingles = (sum - FiversRequired) / 100;
+            if (NoOfSingles > cashBalances[Demonination.Single])
+                NoOfSingles = cashBalances[Demonination.Single];
+            var SinglesRequired = (NoOfSingles * 100);
 
-    //        change = int(value * 100)
-    //a = change / 500
-    //print a, " - $2 Coins"
-    //b = (change - (a * 200)) / 100
-    //print b, " - $1 Coins"
-    //c = (change - (a * 200) - (b * 100)) / 50
-    //print c, " - 50c Coins"
-    //d = (change - (a * 200) - (b * 100) - (c * 50)) / 20
-    //print d, " - 20c Coins"
-    //e = (change - (a * 200) - (b * 100) - (c * 50) - (d * 20)) / 10
-    //print e, " - 10c Coins"
-    //f = (change - (a * 200) - (b * 100) - (c * 50) - (d * 20) - (e * 10)) / 5
-    //print f, " - 5c Coins"
-            return true;
+            var NoOfQuarters = (sum - FiversRequired - SinglesRequired) / 25;
+            if (NoOfQuarters > cashBalances[Demonination.Quarter])
+                NoOfQuarters = cashBalances[Demonination.Quarter];
+            var QuartersRequired = NoOfQuarters * 25;
+
+            var NoOfNickels = (sum - FiversRequired - SinglesRequired - QuartersRequired) / 10;
+            if (NoOfNickels > cashBalances[Demonination.Nickel])
+                NoOfNickels = cashBalances[Demonination.Nickel];
+            var NickelsRequired = NoOfNickels * 10;
+
+            var NoOfDimes = (sum - FiversRequired - SinglesRequired - QuartersRequired - NickelsRequired) / 5;
+            if (NoOfDimes > cashBalances[Demonination.Dime])
+                NoOfDimes = cashBalances[Demonination.Dime];
+            var DimesRequired = NoOfDimes * 5;
+
+            return (sum - FiversRequired - SinglesRequired - QuartersRequired - NickelsRequired - DimesRequired) == 0; 
         }
     }
 }

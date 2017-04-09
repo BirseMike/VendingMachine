@@ -99,8 +99,17 @@
         }
 
         self.Cancel = function () {
-            self.BalancePaid(0);
-            self.CreditCardNo(null);
+            $.ajax({
+                type: "POST",
+                url: options.refundCashUrl,
+            }).done(function (result) {
+                self.BalancePaid(0);
+                self.CreditCardNo(null);
+                self.SelectedProduct(null);
+            }).fail(function (error) {
+                self.HasError(true);
+                self.ErrorMessage(error.responseText);
+            });
         };
 
         self.Pay = function () {

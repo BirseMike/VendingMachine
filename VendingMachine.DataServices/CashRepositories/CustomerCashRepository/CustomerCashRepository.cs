@@ -42,11 +42,14 @@ namespace VendingMachine.DataServices.CashRepositories
             return new Dictionary<Demonination, int>(cashBalances);
         }
 
-        public Dictionary<Demonination, int> RefundAll()
+        public async Task<Dictionary<Demonination, int>> RefundAll()
         {
-            var refunds = new Dictionary<Demonination, int>(cashBalances);
-            cashBalances.Clear();
-            return refunds;
+            return await Task.Run(() =>
+            {
+                var refunds = new Dictionary<Demonination, int>(cashBalances);
+                cashBalances.Clear();
+                return refunds;
+            });
         }
     }
 }

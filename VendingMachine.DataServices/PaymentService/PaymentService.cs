@@ -34,12 +34,15 @@ namespace VendingMachine.DataServices.PaymentService
 
         public async Task<bool> ConfirmCreditCardPayment(double price)
         {
+            //TODO:  Do something with 5% surcharge
+
             return await creditCardService.PaymentAccepted(creditCardNo);
         }
 
         public Task<bool> ConfirmCashPayment(double price)
         {
-            throw new NotImplementedException();
+            //TODO this needs further work put here now for testing of extension
+            return Task.Run(() => machineCashRepository.HasChange(price));
         }
     }
 }

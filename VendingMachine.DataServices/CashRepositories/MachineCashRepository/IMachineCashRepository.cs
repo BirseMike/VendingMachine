@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace VendingMachine.DataServices.CashRepositories
 {
     public interface IMachineCashRepository : ICashRepository
     {
-        bool HasChange(double value);
+        Task<bool> HasChange(double value);
         IEnumerable<KeyValuePair<Demonination,int>> giveChange(double value);
     }
 }

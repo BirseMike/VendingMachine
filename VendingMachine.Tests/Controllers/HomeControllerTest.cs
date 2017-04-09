@@ -19,7 +19,7 @@ namespace VendingMachine.Tests.Controllers
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Home Page", result.ViewBag.Title);
+            Assert.AreEqual("Acme Vending Machine", result.ViewBag.Title);
         }
     }
 }

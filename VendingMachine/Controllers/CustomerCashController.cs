@@ -18,6 +18,7 @@ namespace VendingMachine.Controllers
             this.customerCashRepository = customerCashRepository;
         }
         // POST: api/CustomerCash
+        [Route("api/customercash/add")]
         public async Task<double> Post([FromBody] CustomerCashViewModel denom)
         {
             Demonination cashDenom;
@@ -33,6 +34,13 @@ namespace VendingMachine.Controllers
             }
 
             return await customerCashRepository.Add(cashDenom);
+        }
+
+        [Route("api/customercash/refund")]
+        public async Task<double> Refund()
+        {
+            var cashBalance = await customerCashRepository.RefundAll();
+            return cashBalance.GetBalanceSum();
         }
     }
 

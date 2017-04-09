@@ -35,6 +35,7 @@
             return await Task.Run(() => products.FirstOrDefault(p => p.Id == id));
         }
 
+        //TODO:  Maybe move the BuyProduct to a seperate service
         public async Task<Product> BuyProduct(int id)
         {
             var product = await Task.Run(() => products.FirstOrDefault(p => p.Id == id));
