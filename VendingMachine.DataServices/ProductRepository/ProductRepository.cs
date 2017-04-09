@@ -34,5 +34,27 @@
         {
             return await Task.Run(() => products.FirstOrDefault(p => p.Id == id));
         }
+
+        public async Task<Product> BuyProduct(int id)
+        {
+            var product = await Task.Run(() => products.FirstOrDefault(p => p.Id == id));
+            if (product!=null)
+            {
+                if (product.Stock > 0)
+                {
+                    product.Stock--;
+                }
+                else
+                {
+                    throw new System.Exception($"Product {id} out of stock");
+                }
+            }
+
+            if (product == null)
+            {
+                throw new System.Exception($"Product {id} not found");
+            }
+            return product;
+        }
     }
 }

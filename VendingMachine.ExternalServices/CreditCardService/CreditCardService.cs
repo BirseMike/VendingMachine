@@ -1,10 +1,19 @@
-﻿namespace VendingMachine.ExternalServices
+﻿using System;
+using System.Threading.Tasks;
+
+namespace VendingMachine.ExternalServices
 {
-    class CreditCardService : ICreditCardService
+    public class CreditCardService : ICreditCardService
     {
-        public bool PaymentAccepted(string creditCardNumber)
+        public async Task<bool> IsCardValid(string creditCardNumber)
         {
-            return creditCardNumber.Length < 16;
+            return await Task.Run(() => creditCardNumber.Length == 16);
+        }
+
+        public async Task<bool> PaymentAccepted(string creditCardNumber)
+        {
+            bool valid = await IsCardValid(creditCardNumber);
+            return valid;
         }
     }
 }

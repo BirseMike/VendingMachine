@@ -5,9 +5,9 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using Models;
     using VendingMachine.DataServices;
 
-    [Route("Api/Products")]
     public class ProductsController : ApiController
     {
         private IProductRepository productRepository;
@@ -41,7 +41,7 @@
                 throw new HttpResponseException(resp);
             }
 
-            if (product.Stock==0)
+            if (product.Stock<=0)
             {
                 var resp = new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
@@ -54,33 +54,6 @@
 
             return product;
         }
-
-        // POST api/values
-        public async Task<string> Post([FromBody] PaymentModel model)
-        {
-            if (!string.IsNullOrEmpty(model.CreditCardNo))
-            {
-                if (true)
-                {
-                    var resp = new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                    {
-                        Content = new StringContent($"Invalid Credit Card Number : {model.CreditCardNo}"),
-                        ReasonPhrase = "Invalid Credit Card Number"
-                    };
-
-                    throw new HttpResponseException(resp);
-                }
-            }
-            var product = await productRepository.GetProduct(model.ProductId);
-            product.Stock--;
-            return "Item Purchased";
-        }
     }
 
-    public class PaymentModel
-    {
-        public string CreditCardNo { get; set; }
-        public double Cash { get; set; }
-        public int ProductId { get; set; }
-    }
 }

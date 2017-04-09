@@ -1,7 +1,11 @@
-﻿namespace VendingMachine.ExternalServices
+﻿using System.Threading.Tasks;
+
+namespace VendingMachine.ExternalServices
 {
-    interface ICreditCardService
+    public interface ICreditCardService
     {
-        bool PaymentAccepted(string creditCardNumber);
+        Task<bool> IsCardValid(string creditCardNumber);
+        Task<bool> PaymentAccepted(string creditCardNumber);
+
     }
 }

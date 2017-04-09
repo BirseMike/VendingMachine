@@ -5,10 +5,12 @@
 </div>
 <div class="row">
     <div class="col-md-3">
-        <div>
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">Product Code</span>
-                <input type="text" class="form-control" placeholder="Enter product Code" aria-describedby="basic-addon1" data-bind="value: EnteredProductCode">
+        <div >
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Product Code</h3>
+                </div>
+                <div class="panel-body" data-bind="text: DisplayEnteredProductCode"></div>
             </div>
         </div>
         <table class="table">
@@ -33,12 +35,10 @@
                     <td><button data-id="0" class="btn btn-default" data-bind="click: KeyPadPress">0</button></td>
                     <td><button data-id="Ok" class="btn btn-success glyphicon glyphicon-ok" data-bind="click: KeyPadPress"></button></td>
                 </tr>
-                <tr>
-                    <td colspan="2"><button data-id="Clear" class="btn btn-danger btn-block glyphicon glyphicon-trash" data-bind="click: KeyPadPress"></button></td>
-                </tr>
             </tbody>
         </table>
     </div>
+
     <div class="col-md-6">
         <table id="productTable" class="table">
             <thead>
@@ -49,7 +49,7 @@
                 </tr>
             </thead>
             <tbody data-bind="foreach: Products">
-                <tr data-bind="css:{ active: $root.SelectedProduct() && $root.SelectedProduct() == Id}">
+                <tr data-bind="css:{ active: $root.IsProductSelected($root.SelectedProduct(),Id)}">
                     <td data-bind="text: Id"></td>
                     <td data-bind="text: Name"></td>
                     <td data-bind="text: Price"></td>
@@ -57,13 +57,19 @@
             </tbody>
         </table>
     </div>
+
     <div class="col-md-3">
         <div class="row">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">To Pay</h3>
                 </div>
-                <div class="panel-body" data-bind="text: PriceToPay"></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <span class="col-md-10" data-bind="text: PriceToPay"></span>
+                        <button data-id="Clear" class="btn btn-sm btn-danger glyphicon glyphicon-remove" data-bind="click: KeyPadPress, visible: SelectedProduct()"></button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -81,28 +87,30 @@
                     <h3 class="panel-title">Payment</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="row">
-                        <button data-value="5" class="btn btn-default" data-bind="click: CashInserted">$5</button>
-                        <button data-value="1" class="btn btn-default" data-bind="click: CashInserted">$1</button>
-                        <button data-value="0.25" class="btn btn-default" data-bind="click: CashInserted">25¢</button>
-                        <button data-value="0.10" class="btn btn-default" data-bind="click: CashInserted">10¢</button>
-                        <button data-value="0.05" class="btn btn-default" data-bind="click: CashInserted">5¢</button>
+                    <div>
+                        <!-- TODO fix hardcoded enum values-->
+                        <button data-value="Fiver" class="btn btn-default" data-bind="click: CashInserted">$5</button>
+                        <button data-value="Single" class="btn btn-default" data-bind="click: CashInserted">$1</button>
+                        <button data-value="Quarter" class="btn btn-default" data-bind="click: CashInserted">25¢</button>
+                        <button data-value="Nickel" class="btn btn-default" data-bind="click: CashInserted">10¢</button>
+                        <button data-value="Dime" class="btn btn-default" data-bind="click: CashInserted">5¢</button>
                     </div>
                     <br />
-                    <div class="row">
+                    <div >
                         <div class="input-group">
                             <span class="input-group-addon" id="credit-card-addon">Credit Card</span>
                             <input type="text" class="form-control" placeholder="Enter Card Number" aria-describedby="credit-card-addon" data-bind="textInput: CreditCardNo">
                         </div>
                     </div>
+                    <br />
+                    <div>
+                        <button class="btn btn-danger" data-bind="click: Cancel">Cancel</button>
+                        <button class="btn btn-primary" data-bind="click: Pay">Pay</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <button class="btn btn-danger" data-bind="click: Cancel">Cancel</button>
-            <button class="btn btn-primary" data-bind="click: Pay">Pay</button>
-        </div>
     </div>
 </div>
 <div class="row">
@@ -111,127 +119,17 @@
 </div>
 
 @section scripts{
+    <script src="~/Scripts/CustomScripts/Vendomat.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             // Send an AJAX request
             appFolder = "@Url.Content("~/")";
 
-            var productViewModel = function (options) {
-                self = this;
-                self.Products = ko.observableArray();
-                self.EnteredProductCode = ko.observable();
-                self.SelectedProduct = ko.observable();
-                self.PriceToPay = ko.computed(function () {
-                    if (self.SelectedProduct()) {
-                        return self.SelectedProduct().Price;
-                    }
-                    return 0;
-                });
-                self.CreditCardNo = ko.observable();
-
-                self.HasError = ko.observable(false);
-                self.ErrorMessage = ko.observable();
-                self.HasPurchased = ko.observable(false);
-                self.PurchaseMessage = ko.observable();
-
-                self.BalancePaid = ko.observable(0);
-                self.PaidDisplay = ko.computed(function () {
-                    return self.BalancePaid().toFixed(2);
-                })
-
-                self.KeyPadPress = function (item, event) {
-                    var keyValue = $(event.currentTarget).attr('data-id');
-                    var value = self.EnteredProductCode() ? self.EnteredProductCode() : "";
-                    self.HasError(false);
-                    switch (keyValue) {
-                        case "Cancel":
-                            if (value)
-                                if (value.length > 2) {
-                                    self.EnteredProductCode(value.substring(0, self.EnteredProductCode().length - 1));
-                                }
-                                else {
-                                    self.EnteredProductCode(null);
-                                }
-                            break;
-                        case "Ok": {
-                            self.GetProduct(value);
-                        }
-                            break;
-                        case "Clear": {
-                            self.EnteredProductCode(null);
-                            self.SelectedProduct(null);
-                        }
-                            break; default:
-                                self.EnteredProductCode(value + keyValue);
-                    }
-                }
-
-                self.CashInserted = function (item, event) {
-                    var cashValue = Number($(event.currentTarget).attr('data-value'))
-                    var value = self.BalancePaid() ? self.BalancePaid() : 0;
-                    self.BalancePaid(value + cashValue);
-                }
-
-                self.GetProduct = function (id) {
-                    $.getJSON(options.getProductUrl, { id: id })
-                        .done(function (data) {
-                            self.EnteredProductCode(null);
-                            self.SelectedProduct(data);
-                        }).fail(function (error) {
-                            self.HasError(true);
-                            self.ErrorMessage(error.responseText);
-                        });
-                }
-
-                self.GetProducts = function () {
-                    $.getJSON(options.getProductsUrl)
-                        .done(function (data) {
-                            self.Products(data);
-                        }).fail(function (error) {
-                            self.HasError(true);
-                            self.ErrorMessage(error.responseText);
-                        });
-                }
-
-                self.Cancel = function () {
-                    self.BalancePaid(0);
-                    self.CreditCardNo(null);
-                };
-
-                self.Pay = function () {
-                    self.HasPurchased(false);
-                    self.HasError(false);
-                    if (!self.SelectedProduct()) {
-                        return;
-                    }
-                    var payment = {
-                        CreditCardNo: self.CreditCardNo(),
-                        Cash: self.BalancePaid(),
-                        ProductId: self.SelectedProduct().Id
-                    };
-                    $.ajax({
-                        type: "POST",
-                        data: JSON.stringify(payment),
-                        url: options.payProductUrl,
-                        contentType: "application/json"
-                    }).done(function (result) {
-                        self.HasPurchased(true);
-                        self.PurchaseMessage(result);
-                        self.BalancePaid(0);
-                        self.CreditCardNo(null);
-                    }).fail(function (error) {
-                        self.HasError(true);
-                        self.ErrorMessage(error.responseText);
-                    });
-                };
-
-                self.GetProducts();
-
-            }
             ko.applyBindings(new productViewModel({
                 getProductsUrl: appFolder + 'api/products',
                 getProductUrl: appFolder + 'api/products',
-                payProductUrl: appFolder + 'api/products'
+                payProductUrl: appFolder + 'api/purchase',
+                tenderCashUrl: appFolder + 'api/customercash'
             }));
         });
     </script>

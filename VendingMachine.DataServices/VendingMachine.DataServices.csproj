@@ -40,19 +40,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CashRepository\CashRepository.cs" />
-    <Compile Include="CashRepository\CustomerCashRepository\CustomerCashRepository.cs" />
-    <Compile Include="CashRepository\CustomerCashRepository\ICustomerCashRepository.cs" />
-    <Compile Include="CashRepository\DenominationBalance.cs" />
-    <Compile Include="CashRepository\ICashRepository.cs" />
-    <Compile Include="CashRepository\MachineCashRepository\IMachineCashRepository.cs" />
-    <Compile Include="CashRepository\MachineCashRepository\MachineCashRepository.cs" />
+    <Compile Include="CashRepositories\CustomerCashRepository\CustomerCashRepository.cs" />
+    <Compile Include="CashRepositories\CustomerCashRepository\ICustomerCashRepository.cs" />
+    <Compile Include="CashRepositories\Denomination.cs" />
+    <Compile Include="CashRepositories\ICashRepository.cs" />
+    <Compile Include="CashRepositories\MachineCashRepository\IMachineCashRepository.cs" />
+    <Compile Include="CashRepositories\MachineCashRepository\MachineCashRepository.cs" />
+    <Compile Include="CashRepositories\Extensions\RepositoryBalanceExtensions.cs" />
+    <Compile Include="PaymentService\IPaymentService.cs" />
+    <Compile Include="PaymentService\PaymentService.cs" />
     <Compile Include="ProductRepository\IProductRepository.cs" />
     <Compile Include="ProductRepository\Product.cs" />
     <Compile Include="ProductRepository\ProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\VendingMachine.ExternalServices\VendingMachine.ExternalServices.csproj">
+      <Project>{015B1062-4FE7-4D4E-97EF-19986429598B}</Project>
+      <Name>VendingMachine.ExternalServices</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
