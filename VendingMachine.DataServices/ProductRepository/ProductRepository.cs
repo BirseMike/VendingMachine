@@ -11,16 +11,16 @@
         {
             products = new Product[]
             {
-                new Product { Id = 1, Name = "banana", Price = 0.5M, Stock = 10 },
-                new Product { Id = 2, Name = "apple", Price = 0.5M, Stock = 10 },
-                new Product { Id = 3, Name = "kiwi", Price = 1, Stock = 10 },
-                new Product { Id = 4, Name = "orange", Price = 1.5M, Stock = 10 },
-                new Product { Id = 5, Name = "strawberry", Price = 0.25M, Stock = 10 },
-                new Product { Id = 6, Name = "raspberry", Price = 0.15M, Stock = 10 },
-                new Product { Id = 7, Name = "mango", Price = 0.45M, Stock = 10 },
-                new Product { Id = 8, Name = "persimmons", Price = 2M, Stock = 10 },
-                new Product { Id = 9, Name = "papaya", Price = 2.5M, Stock = 10 },
-                new Product { Id = 10, Name = "blueberry", Price = 0.40M, Stock = 10 }
+                new Product { Id = 101, Name = "banana", Price = 0.5M, Stock = 5 },
+                new Product { Id = 201, Name = "apple", Price = 0.5M, Stock = 5 },
+                new Product { Id = 301, Name = "kiwi", Price = 1, Stock = 5 },
+                new Product { Id = 401, Name = "orange", Price = 1.5M, Stock = 5 },
+                new Product { Id = 501, Name = "strawberry", Price = 0.25M, Stock = 5 },
+                new Product { Id = 601, Name = "raspberry", Price = 0.15M, Stock = 5 },
+                new Product { Id = 701, Name = "mango", Price = 0.45M, Stock = 5 },
+                new Product { Id = 808, Name = "persimmons", Price = 2M, Stock = 5 },
+                new Product { Id = 909, Name = "papaya", Price = 2.5M, Stock = 5 },
+                new Product { Id = 109, Name = "blueberry", Price = 0.40M, Stock = 5 }
             };
 
         }
